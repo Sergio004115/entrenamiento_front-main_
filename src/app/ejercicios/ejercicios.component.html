@@ -1,0 +1,51 @@
+<div class="mt-4">
+    <p><b>1) Muestre un campo de texto donde se puedan ingresar números de máximo 4 unidades. Cada número agregado debe clasificarse como par o impar y verse en la pantalla.</b>
+    </p>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Ingrese un Número</label>
+                <input type="number" class="form-control" maxlength="4" name="numeroParImpar" [(ngModel)]="numeroParImpar">
+            </div>
+            <button class="btn btn-outline-primary" (click)="parOImpar()">Calcular</button>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Resultado</label>
+                <h2>{{resultado}}</h2>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+<div class="row">
+    <div class="col-sm-12">
+        <p><b>2) Muestre dos campos de texto y establezca si las dos cadenas de caracteres son o no anagramas. “una palabra es anagrama de otra si las dos tienen las mismas letras” ejemplo: ‘onidi’ es anagrama de ‘indio’.</b></p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-4">
+        <label for="exampleInputEmail1">Texto 1</label>
+        <input type="text" class="form-control" name="texto1" [(ngModel)]="texto1">
+        <button class="btn btn-outline-primary mt-2" (click)="convertirAnagrama()">Convertir</button>
+    </div>
+    <div class="col-sm-4">
+        <label for="exampleInputEmail1">Texto 2</label>
+        <input type="text" class="form-control" name="texto2" [(ngModel)]="texto2">
+    </div>
+    <div class="col-sm-4">
+        <h2>{{resultadoAnagrama}}</h2>
+    </div>
+</div>
+<hr>
+<div class="row">
+    <div class="col-sm-12">
+        <p><b>3) Se tiene el siguiente array [M1,M2,M3,M4,M5,M6,M7,M8,M9]. El cual hace referencia a
+            monedas. Todas las monedas pesan lo mismo excepto una que es más pesada que
+            las demás. Se desea conocer cual de estas es la que pesa más. Para solucionar el
+            problema usted cuenta con una balanza de platos (donde puede comparar dos
+            pesos y según su inclinación puede establecer cuál pesa más). Esta balanza la puede
+            utilizar solo dos veces. Partiendo de esto, cree un método que imprima en pantalla lo
+            que consideraría usted como la moneda más pesada dentro del array.</b></p>
+    </div>
+</div>

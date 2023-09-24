@@ -1,0 +1,100 @@
+<div class="mt-2">
+    <div class="text-right">
+        <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModal">
+            nuevo Jugador
+          </button>
+    </div>
+    <table class="table table-striped mt-2">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Código</th>
+                <th scope="col">Nombres</th>
+                <th scope="col">Camiseta</th>
+                <th scope="col">equipo</th>
+                <th scope="col">Campeonatos</th>
+                <th scope="col">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let player of players; let i = index">
+                <th scope="row">{{ i + 1}}</th>
+                <td>{{ player.codigo }}</td>
+                <td>{{ player.nombres }}</td>
+                <td>{{ player.camiseta }}</td>
+                <td>{{ player.nombreEquipo }}</td>
+                <td>
+                    <p>{{ player.campeonatos }}</p>
+                </td>
+                <td>
+                    <button class="btn btn-outline-primary">Editar</button>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Insertar un nuevo jugador</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="newPlayerForm" (ngSubmit)="newPlayer()">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="codigo">Código<b class="text-danger">*</b></label>
+                                <input type="text" class="form-control" id="codigo" formControlName="codigo">
+                                <span class="text-danger" *ngIf="camposValidos('codigo')"><b>Campo Obligatorio</b></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="codigo">Nombres<b class="text-danger">*</b></label>
+                                <input type="text" class="form-control" id="Nombres" formControlName="nombres">
+                                <span class="text-danger" *ngIf="camposValidos('nombres')"><b>Campo Obligatorio</b></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="codigo">Camiseta<b class="text-danger">*</b></label>
+                                <input type="text" class="form-control" id="camiseta" formControlName="camiseta">
+                                <span class="text-danger" *ngIf="camposValidos('camiseta')"><b>Campo Obligatorio</b></span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="exampleFormControlSelect1">Equipo<b class="text-danger">*</b></label>
+                                <select class="form-control" id="exampleFormControlSelect1" formControlName="equipo">
+                                  <option value="{{team.idEquipo}}" *ngFor="let team of teams">{{item.nombre}}</option>                                    
+                                </select>
+                                <span class="text-danger" *ngIf="camposValidos('equipo')"><b>Campo Obligatorio</b></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label for="codigo">Campeonatos<b class="text-danger">*</b></label>
+                                <input type="text" class="form-control" id="campeonatos" formControlName="campeonatos">
+                                <span class="text-danger" *ngIf="camposValidos('campeonatos')"><b>Campo Obligatorio</b></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-rigth">
+                        <button type="submit" class="btn btn-outline-primary" (click)="newPlayer()">Crear</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
