@@ -18,11 +18,11 @@ export class JugadoresService {
   }
 
   newPlayer(formData){
-    return this.http.post(`${baseUrl}api/jugadores`, formData);
+    return this.http.post(`${baseUrl}api/Jugadores/InsertNewPlayer`, formData);
   }
 
   updatePlayer(formData){
-    return this.http.put(`${baseUrl}api/jugadores`, formData);
+    return this.http.put(`${baseUrl}api/Jugadores/UpdatePlayer`, formData);
   }
 
 }

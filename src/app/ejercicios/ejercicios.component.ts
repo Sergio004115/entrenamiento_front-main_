@@ -59,4 +59,21 @@ export class EjerciciosComponent implements OnInit {
     
   }
 
+  onInputChange(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    const maxLength = 4;
+
+    // Limitar la longitud máxima
+    if (inputElement.value.length > maxLength) {
+      alert("el Número ingresado es mayor a 4 digitos, se tomara solo los cuatro primeros");
+      inputElement.value = inputElement.value.slice(0, maxLength);
+      this.numeroParImpar = parseInt(inputElement.value, 10); // Actualiza el modelo si es necesario
+    }
+
+    if(this.numeroParImpar % 2 == 0){
+      return this.resultado = `El número ${this.numeroParImpar} es Par`;
+     }
+     this.resultado = `El número ${this.numeroParImpar} es Impar`;
+  }
+
 }

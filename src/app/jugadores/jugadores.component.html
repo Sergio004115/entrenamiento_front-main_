@@ -1,6 +1,6 @@
 <div class="mt-2">
     <div class="text-right">
-        <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#exampleModal">
+        <button type="button" class="btn btn-outline-primary" (click)="generateNewPlayer()" data-toggle="modal" data-target="#exampleModal">
             nuevo Jugador
           </button>
     </div>
@@ -27,7 +27,9 @@
                     <p>{{ player.campeonatos }}</p>
                 </td>
                 <td>
-                    <button class="btn btn-outline-primary">Editar</button>
+                    <button type="button" class="btn btn-outline-primary" (click)="isUpdatePlayer(player)" data-toggle="modal" data-target="#exampleModal">
+                        Editar
+                    </button>
                 </td>
             </tr>
 
@@ -40,7 +42,8 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Insertar un nuevo jugador</h5>
+                <h5 class="modal-title" id="exampleModalLabel" *ngIf="btnCreate">Insertar un nuevo jugador</h5>
+                <h5 class="modal-title" id="exampleModalLabel" *ngIf="!btnCreate">Editar jugador</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -74,14 +77,14 @@
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="exampleFormControlSelect1">Equipo<b class="text-danger">*</b></label>
-                                <select class="form-control" id="exampleFormControlSelect1" formControlName="equipo">
-                                  <option value="{{team.idEquipo}}" *ngFor="let team of teams">{{item.nombre}}</option>                                    
+                                <select class="form-control" id="exampleFormControlSelect1" (change)="isShowChampionships()" formControlName="idEquipo"> 
+                                  <option *ngFor="let team of teams" [value]="team.idEquipo" >{{ team.nombre }}</option>                                  
                                 </select>
-                                <span class="text-danger" *ngIf="camposValidos('equipo')"><b>Campo Obligatorio</b></span>
+                                <span class="text-danger" *ngIf="camposValidos('idEquipo')"><b>Campo Obligatorio</b></span>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" *ngIf="isShowChampionships()">
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label for="codigo">Campeonatos<b class="text-danger">*</b></label>
@@ -91,7 +94,8 @@
                         </div>
                     </div>
                     <div class="text-rigth">
-                        <button type="submit" class="btn btn-outline-primary" (click)="newPlayer()">Crear</button>
+                        <button type="button" class="btn btn-outline-primary w-100" *ngIf="btnCreate" (click)="newPlayer()">Crear</button>
+                        <button type="button" class="btn btn-outline-primary w-100" *ngIf="!btnCreate" (click)="updatePlayer()">Editar</button>
                     </div>
                 </form>
             </div>

@@ -15,19 +15,23 @@ export class JugadoresComponent implements OnInit {
   public players: ListPlayers[] = [];
   public teams: ListTeams[] = []
   public letras: any[] = [];
+  public btnCreate: boolean = true;
+  public isChampionships: boolean = true;
 
   public newPlayerForm = this.fb.group({
     codigo: ['', [Validators.required]],
     nombres: ['', [Validators.required]],
     camiseta: ['', [Validators.required]],
-    equipo: ['', [Validators.required]],
-    campeonatos: ['', [Validators.required]]
+    idEquipo: ['', [Validators.required]],
+    campeonatos: ['', [Validators.required]],
+    idJugador:[''],
+
   });
 
   constructor(private fb: FormBuilder, private jugadoresService: JugadoresService, private equiposService: EquiposService) { }
 
   ngOnInit(): void {
-    this.ocultarCampeonatos();
+    this.getTeam();
     this.getPlayers();
   }
 
@@ -36,55 +40,84 @@ export class JugadoresComponent implements OnInit {
       .subscribe((players: any) => {
         if(players.ok == true){
           this.players = players.data;
-          console.log('estos son los jugadores', players);
         }
-
       });
   }
 
-  // getTeam(){
-  //   this.equiposService.getTeam()
-  //     .subscribe(team => {
-  //       this.teams = team;
-  //     });
-  // }
-
+  getTeam(){
+    this.equiposService.getTeam()
+      .subscribe(team => {
+        this.teams = team
+      });
+  }
+  validateForm(){
+    
+  }
   newPlayer(){
-    if(this.newPlayerForm.invalid){
-      return this.newPlayerForm.markAllAsTouched();
+    if(this.isChampionships == true){
+      if(this.newPlayerForm.invalid){
+        return this.newPlayerForm.markAllAsTouched();
+      }
     }
-    //TODO: HACER EL POST DEL JUGADOR
-    this.jugadoresService.newPlayer(this.newPlayerForm)
+    this.jugadoresService.newPlayer(this.newPlayerForm.value)
       .subscribe(resp => {
+        if(resp == false){
+          return alert("usuario ya se encuentra registrado");
+        }else{
+          this.getPlayers();
+          alert("Jugador Creado correctamente");
+          this.newPlayerForm.reset();
+          return this.isChampionships = true;
+        }
       });
     
   }
 
-  updatePlayer(){
+  isUpdatePlayer(player){
+    console.log(player);
+    console.log(player);
+    this.btnCreate = false;
+    this.newPlayerForm.patchValue(player);
+  }
 
+  updatePlayer(){
+    if(this.newPlayerForm.invalid){
+      return this.newPlayerForm.markAllAsTouched();
+    }
+    this.jugadoresService.updatePlayer(this.newPlayerForm.value)
+      .subscribe(resp => {
+        if(resp == true){
+          this.getPlayers();
+          this.newPlayerForm.reset();
+          return alert("Jugador Actualizado correctamente");
+        }else{
+          return alert("Error al Actualizar Jugador");
+        }
+      })
+;
   }
 
   camposValidos(campo: string){
     return this.newPlayerForm.controls[campo].errors && this.newPlayerForm.controls[campo].touched; 
   }
 
-  ocultarCampeonatos() {
-    const equiposFiltrados = this.players.filter(player => {
-    const nombreEquipo = player.nombreEquipo.toUpperCase().replace(/[^A-Z0-9]/g, '');  // Convertir a mayúsculas y quitar caracteres no alfanuméricos
-    return /^[AB]/.test(nombreEquipo) && nombreEquipo.length > 0;  // Nombre comienza con "A" o "B" y es alfanumérico
-    });
+  isShowChampionships(){
+    const idEquipo = this.newPlayerForm.value.idEquipo;
+    const equipoEncontradoIndex = this.teams.findIndex(team => team.idEquipo === idEquipo);
+  
+    if (equipoEncontradoIndex !== -1) {
+      const equipoEncontrado = this.teams[equipoEncontradoIndex].nombre;
+      this.isChampionships = false;
+      return !equipoEncontrado.match(/^[aAbB]/);
+    }
+    this.isChampionships = true;
+    return true;
   }
+  
 
-  // ocultarCampeonatos(){   
-  //   var primeraLetra: any;
-  //   for (let i = 0; i < this.players.length; i++) {
-  //     primeraLetra = this.players[i].nombreEquipo.charAt(0);     
-  //     this.letras.push(primeraLetra);  
-  //     if(this.players[i].nombreEquipo.charAt(0).includes("A")){
-  //      const filtro = this.players.filter((equipo: any) => equipo.length <= 9)
-  //      console.log('ESTE ES EL FILTRO', filtro);
-  //     }
-  //   }   
-  // }
+  generateNewPlayer(){
+    this.btnCreate = true;
+    this.newPlayerForm.reset();
+  }
 
 }
